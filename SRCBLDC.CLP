@@ -3,7 +3,7 @@
              DCL        VAR(&DESTFILE) TYPE(*CHAR) LEN(10) +
                           VALUE(SOURCE)
              DCL        VAR(&DESTLIB) TYPE(*CHAR) LEN(10) +
-                          VALUE(QSHONI)
+                          VALUE(DENNISN2)
              DCL        VAR(&TGTRLS) TYPE(*CHAR) LEN(10) +
                           VALUE(*CURRENT)
              DCL        VAR(&VERSION) TYPE(*CHAR) LEN(30) VALUE(V1.0.10)

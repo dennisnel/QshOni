@@ -7,8 +7,8 @@
 #               before running build.sh
 #               Existing QSHONI library will be cleared by build.sh
 #----------------------------------------------------------------
-INSTALLTEMP="/tmp"
-INSTALLQSHONI="/tmp/QshOni"
+INSTALLTEMP="/home/DENNISN/tmp"
+INSTALLQSHONI="/home/DENNISN/tmp/QshOni"
 REPONAME="https://github.com/richardschoen/QshOni.git"
 
 # Create temp download IFS location
@@ -19,5 +19,5 @@ git -c http.sslVerify=false clone --recurse-submodules ${REPONAME}
 
 # Change to IFS temp download directory for repo and call build.sh to create library
 cd ${INSTALLQSHONI}
-bash build.sh
+#bash build.sh
 # After installation you can manually delete the IFS directory /tmp/QshOni

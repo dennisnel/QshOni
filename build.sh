@@ -4,7 +4,7 @@
 # Author: Richard Schoen
 # Purpose: Create QSHONI library, copies source members and compiles objects
 #----------------------------------------------------------------
-SRCLIB="QSHONI"
+SRCLIB="DENNISN2"
 SRCLIBTEXT="QShell on IBM i"
 SRCFILE="SOURCE"
 dashes="---------------------------------------------------------------------------"
