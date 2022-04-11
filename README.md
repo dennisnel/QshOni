@@ -36,7 +36,7 @@ Use this install method if you want to install from a save file object.
 
 Download the **qshoni.savf** save file from the selected releases page. 
 
-https://github.com/richardschoen/QshOni/releases  **(Latest version - V1.0.6)**
+https://github.com/richardschoen/QshOni/releases  **(Latest pre-build save file version - V1.0.10. Build from source for more current)**
 
 Upload the **qshoni.savf** to the IFS and place it in **/tmp/qshoni.savf**
 
@@ -210,6 +210,72 @@ The command is a convenience wrapper that can be used to call a bash command wit
 **PRTOUTQ** - This option determines the output queue where the spool file will generated to when PRTSTDOUT = *YES. ***Default = *SAME ***
 
 
+# Using the QSHCURL CL command to call a curl command sequence
+
+The following example calls the curl command to download the google home page site contents to an IFS file. You only need to pass the parms after curl
+
+ ```
+      QSHCURL CMDLINE('http://www.google.com -o /tmp/curlout.txt')   
+      DSPSTDOUT(*YES)         
+      LOGSTDOUT(*NO)          
+      PRTSTDOUT(*NO)          
+      DLTSTDOUT(*YES)
+      IFSSTDOUT(*NO)
+      IFSFILE('/tmp/log.txt)
+      IFSOPT(*REPLACE)
+      PRTSPLF(QSHEXECLOG) 
+      PRTUSRDTA(*NONE)    
+      PRTTXT(*NONE)       
+```
+
+The following example calls the curl command with the --help flag to display the curl parms available
+
+```
+QSHCURL CMDLINE('--help') DSPSTDOUT(*YES) 
+```
+
+# QSHCURL command parms
+
+**Overview** - This CL command can be used to run a PASE curl command and log the results appropriately. 
+
+The command is a convenience wrapper that can be used to call a curl command with QSHEXEC instead of having to type the following full curl command sequence prefix on a QSHEXEC command line: ***curl http://www.sitename.com -o /tmp/curlout.txt***
+
+```
+curl must be installed in your PASE/QSH environment in /QOpensys/pkgs/bin before this will work
+To install curl from qshell/bash:  yum install curl
+```
+
+**CMDLINE** - Curl command line parameters.
+
+**SETPKGPATH** - Add the IBM i Open Source Package path to PATH environment variable by calling QSHPATH command before running QSH/PASE commands. Default = *YES.
+
+**DSPSTDOUT** - Display the outfile contents. Nice when debugging. 
+
+**LOGSTDOUT** - Place STDOUT log entries into the current jobs job log. Use this if you want the log info in the IBM i joblog. All STDOUT entries are written as CPF message: **QSS9898**
+
+**PRTSTDOUT** - Print STDOUT to a spool file. Use this if you want a spool file of the log output.
+
+**DLTSTDOUT** - This option insures that the STDOUT IFS temp files get cleaned up after processing. All IFS log files get created in the /tmp/qsh directory.
+
+**IFSSTDOUT** - Copy std output to an IFS file. Nice for aggregating log results to a file.
+
+**IFSFILE** - IFS file for stdout results. Needs to be specified if IFSSTDOUT = *YES.
+
+**IFSOPT** - IFS file option. *REPLACE = replace stdout IFS file. *ADD = Add to stdout IFS file.
+
+**CCSID** - When using the iToolkit component for command access, I originally had some issues with CL commands not working correctly. However I don't currently remember exactly why. This may have been solved, however I recommend still passing a value of 37 unless you are in a non US country. If you set to `*SAME`, the CCSID will stay the same as your current job with no change.
+
+**PRTSPLF** - This option holds the name of the spool file used when PRTSTDOUT = *YES. It's a nice way to customize the stdout log prints. ***Default = QSHBASHLOG***
+
+**PRTUSRDTA** - This option holds the name of the spool file user data used when PRTSTDOUT = *YES. ***Default = *NONE ***
+
+**PRTTXT** - This option holds the name of the spool file print txt to be used when PRTSTDOUT = *YES. ***Default = *NONE ***
+
+**PRTHOLD** - This option determines if the spool file is held if one is generated when PRTSTDOUT = *YES. ***Default = *YES ***
+
+**PRTOUTQ** - This option determines the output queue where the spool file will generated to when PRTSTDOUT = *YES. ***Default = *SAME ***
+
+
 # Using the QSHPYRUN CL command to run a Python script via QSHEXEC
 
 The following example calls a helloworld.py script that write to STDOUT
@@ -333,3 +399,40 @@ SQLQRYLIB - Output file library for the file created by the query.
 **Overview** - This CL command is a convenience command to add the IBM i Open Source packages directory name to the PATH environment variable.
 
 **PKGPATH** - Specify IFS location to open source packages. ***DEFAULT = /QOpenSys/pkgs/bin**
+
+# QSHSETPROF command parms
+
+**Overview** - This CL command is a convenience command to create open source profile files for a selected user ID in their home directory.
+
+The following example creates the QShell/PASE .profile, .bashrc and .bash_rc files for the USER1 user ID.
+
+ ```
+     QSHSETPROF USER(USER1)     
+           PROFILE(*YES)   
+           BASHPROFIL(*YES)
+           BASHRC(*YES)    
+           REPLACE(*NO)   
+```      
+
+The following example creates or replaces the QShell/PASE .profile, .bashrc and .bash_rc files for the USER1 user ID.
+
+ ```
+     QSHSETPROF USER(USER1)     
+           PROFILE(*YES)   
+           BASHPROFIL(*YES)
+           BASHRC(*YES)    
+           REPLACE(*YES)   
+```      
+
+**USER** - Specify an existing user profile you want to create profile files for.
+
+**PROFILE** - This parameter is used to create a new .profile file for the selected user in /home/USERID. *YES - Create .profile. *NO - Don't create .profile. Default - *YES
+
+**BASHPROFIL** - This parameter is used to create a new .bash_profile file for the selected user in /home/USERID. *YES - Create .bash_profile. *NO - Don't create .bash_profile. Default - *YES
+
+**BASHRC** - This parameter is used to create a new .bashrc file for the selected user in /home/USERID. *YES - Create .bashrc. *NO - Don't create .bashrc. Default - *YES
+
+**REPLACE** - This parameter is used to replace .profile, .bashrc or .bash_profile if they exist. *YES - Replace files if found. *NO - Don't replace files if found. Default - *NO
+
+
+
